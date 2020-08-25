@@ -1,0 +1,110 @@
+// C program for Linked List  
+
+#include<stdio.h>
+#include<malloc.h>
+
+
+// defining the node structure of the linked list
+
+struct Node{
+    int data;
+    struct Node *next;
+};
+
+typedef struct Node snode;
+
+snode  *root;  // declaring globally root node for the linked list
+
+
+//insertion function
+
+void insert(int n)
+{
+    snode *currentPointer;
+    if(root==NULL){
+        root = (snode *)malloc(sizeof(snode));
+        root->data = n;
+        root->next = NULL;
+    }
+    else{
+        snode *newNode;
+        newNode = (snode *)malloc(sizeof(snode));
+        currentPointer = root;
+        while(currentPointer->next!=NULL){
+            currentPointer = currentPointer->next;
+        }
+        
+        currentPointer->next = newNode;
+        newNode->data = n;
+        newNode->next = NULL;
+    }
+}
+
+// display function
+
+void display(){
+    snode *head;
+    head = root;
+    printf("Elements Present in linked list are '");
+    while(head!=NULL){
+        printf("%d ",head->data);
+        head = head->next;
+    }
+    printf(" '\n");
+}
+
+// delete function 
+
+void delete(int n){
+    snode *dnode,*dpnode, *dfnode;
+    dnode = root;
+    dpnode = root;
+    dfnode = root;
+    if(root->data!=n){
+        while(dnode->data!=n){
+            dnode = dnode->next;
+        }
+        while(dpnode->next!=dnode){
+            dpnode = dpnode->next;
+        }
+        while(dfnode!=dnode->next){
+            dfnode = dfnode->next;
+        }
+        dpnode->next = dfnode;
+        dnode->next = NULL;
+        free(dnode);
+    }
+    else{
+        root = dnode->next;
+        dnode->next = NULL;
+        free(dnode);
+    }
+        printf("Element deleted succesfully\n");
+    
+}
+
+// main function
+
+int main(){
+    int ch,i=0,n;
+    printf("Enter 1 For insertion\n2 for display\n3 for deletion\n4 for exit\n");
+    while(i==0){
+        printf("Enter your choice: \n");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1:printf("Enter the No. \n");
+                    scanf("%d",&n);
+                    insert(n);
+                    break;
+            case 2:display();
+                    break;
+            case 3:printf("Enter the node to be deleted: \n");
+                    scanf("%d",&n);
+                    delete(n);
+                    break;
+            case 4: i=1;
+                    break;
+        }
+    }
+    return 0;
+}
