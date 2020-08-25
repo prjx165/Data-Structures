@@ -1,0 +1,74 @@
+#include<stdio.h>
+#include<stdio.h>
+
+struct Node{
+    int data;
+    struct Node *next;
+} *top;
+
+typedef struct Node node;
+
+void insert(int n){
+    node *CurrentPointer,*newNode;
+    if(top==NULL){
+        top = malloc(sizeof(node));
+        top->data = n;
+        top->next = NULL;
+    }
+    else{
+        CurrentPointer = top;
+        while(CurrentPointer!=NULL){
+            CurrentPointer = CurrentPointer->next;
+        }
+        CurrentPointer = malloc(sizeof(node));
+        CurrentPointer->data = n;
+        CurrentPointer->next = top;
+        top = CurrentPointer;
+    }
+}
+
+int pop(){
+    return top->data;
+}
+
+void delete(){
+    printf("Element %d is deleted from the stack\n",top->data);
+    top = top->next;
+}
+
+void display(){
+    node *ptr;
+    ptr = top;
+    printf("The Elements Present in the stack are ");
+    while(ptr!=NULL){
+        printf("%d ",ptr->data);
+        ptr = ptr->next;
+    }
+    printf("\n");
+}
+
+int main(){
+    int i=0,n,ch;
+    printf("Enter 1 For Insertion\n2 For Deletion\n3 For Display\n4 For Pop\n5 For exit\n");
+    while(i==0){
+        printf("Enter your choice: ");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1: printf("Enter the number: ");
+                    scanf("%d",&n);
+                    insert(n);
+                    break;
+            case 2: delete();
+                    break;
+            case 3: display();
+                    break;
+            case 4: n = pop();
+                    printf("The TopMost Element of the stack is %d\n",n);
+                    break;
+            case 5: i=1;
+                    break;
+            default:printf("!! Incorrect Choice !!\n");
+        }
+    }
+    return 0;
+}
