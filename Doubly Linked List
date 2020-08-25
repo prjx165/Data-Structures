@@ -1,0 +1,106 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node{
+    int data;
+    struct Node *next, *prev;
+} *root;
+
+typedef struct Node node;
+
+void insert(int n){
+    if(root==NULL){
+        root = (node *)malloc(sizeof(node ));
+        root->data = n;
+        root->prev = NULL;
+        root->next = NULL;
+    }
+    else {
+        node *newNode,*iterNode;
+        iterNode = root;
+        newNode = root;
+        while(newNode!=NULL){
+            newNode = newNode->next;
+        }
+        while(iterNode->next!=NULL){
+            iterNode = iterNode->next;
+        }
+        newNode = (node *)malloc(sizeof(node ));
+        iterNode->next = newNode;
+        newNode->data = n;
+        newNode->prev = iterNode;
+        newNode->next = NULL;
+    }
+}
+
+void delete(int n){
+    node *dnode;
+    if(root->data == n){
+        dnode = root;
+        if(dnode->next!=NULL)
+        {
+            root = root->next;
+            root->prev = NULL;
+            dnode->next = NULL;
+        }else{
+            free(root);
+            root = NULL;
+        }
+    }
+    else{
+        dnode = root;
+        while(dnode->data!=n){
+            dnode = dnode->next;
+        }
+        if(dnode->next!=NULL){
+            dnode->prev->next = dnode->next;
+            dnode->next->prev = dnode->prev;
+            dnode->next = NULL;
+            dnode->prev = NULL;
+        }
+        else{
+            dnode->prev->next = NULL;
+            dnode->prev = NULL;
+        }
+        free(dnode);    
+    }
+}
+
+void display(){
+    if(root==NULL){
+        printf("Empty List\n");
+    }else{
+        node *iterNode;
+        iterNode = root;
+        while(iterNode!=NULL){
+            printf("%d ",iterNode->data);
+            iterNode = iterNode->next;
+        }
+        printf("\n");
+    }
+}
+
+int main(){
+    int i=0,n,ch;
+    printf("Enter 1 for insertion\n2 for deletion\n3 doe display\n4 for exit\n");
+    while(i==0){
+        printf("Enter your choice: ");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1: printf("Enter the number: ");
+                    scanf("%d",&n);
+                    insert(n);
+                    break;
+            case 2: printf("Enter the number that has to be deleted: ");
+                    scanf("%d",&n);
+                    delete(n);
+                    break;
+            case 3: display();
+                    break;
+            case 4: i=1;
+                    break;
+            default:printf("*****!! Invalid Choice !!*****\n");
+        }
+    }
+    return 0;
+}
